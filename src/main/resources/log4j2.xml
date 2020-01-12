@@ -17,6 +17,7 @@
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
         </RollingFile>
+        <!--Добавить нарезку по МБ -->
     </Appenders>
     <Loggers>
         <Root level="DEBUG" additivity="false">
