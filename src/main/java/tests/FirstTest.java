@@ -9,7 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ui.BrowserType;
+import config.ui.BrowserType;
 
 @Test(groups = "smoke")
 public class FirstTest extends BaseWebDrivingTest{

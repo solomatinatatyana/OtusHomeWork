@@ -1,7 +1,7 @@
 package config;
 
 import org.aeonbits.owner.Config;
-import ui.BrowserName;
+import config.ui.BrowserName;
 
 @Config.Sources({"classpath:webdriver.properties"})
 public interface UIConfig extends Config{

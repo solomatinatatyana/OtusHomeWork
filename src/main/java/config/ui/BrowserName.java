@@ -1,4 +1,4 @@
-package ui;
+package config.ui;
 
 public final class BrowserName {
     public static final String CHROME = "CHROME";
