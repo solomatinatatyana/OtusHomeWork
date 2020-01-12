@@ -14,7 +14,7 @@ import ui.BrowserType;
 @Test(groups = "smoke")
 public class FirstTest extends BaseWebDrivingTest{
 
-    Logger logger = LogManager.getLogger(getClass());
+    private Logger logger = LogManager.getLogger(FirstTest.class);
 
     @DataProvider(name = "browsers")
     public Object[][] Browsers() {
@@ -25,6 +25,7 @@ public class FirstTest extends BaseWebDrivingTest{
 
     @Test(dataProvider = "browsers")
     public void test(BrowserType type) {
+        logger.info("Start test Class [" + getClass().getSimpleName() + "]  on Browser [" + type +"]");
         switch (type){
             case CHROME:
                 WebDriverManager.chromedriver().setup();
@@ -35,11 +36,10 @@ public class FirstTest extends BaseWebDrivingTest{
                 driver = new FirefoxDriver();
                 break;
         }
-        logger.info(getClass().getSimpleName());
         driver.manage().window().maximize();
         driver.get(testData.getURL());
-        System.out.println(driver.getTitle());
-        logger.debug("End of Test");
+        System.out.println("Заголовок сайта: [" + driver.getTitle() + "]");
+        logger.info("End of test Class [" + getClass().getSimpleName() + "]  on Browser [" + type +"]");
     }
 
     @AfterMethod( alwaysRun = true)
