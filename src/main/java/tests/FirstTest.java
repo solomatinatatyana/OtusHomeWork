@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -39,6 +40,7 @@ public class FirstTest extends BaseWebDrivingTest{
         driver.manage().window().maximize();
         driver.get(testData.getURL());
         System.out.println("Заголовок сайта: [" + driver.getTitle() + "]");
+        Assert.assertEquals(driver.getCurrentUrl(),testData.getURL(),"Неверный URL");
         logger.info("End of test Class [" + getClass().getSimpleName() + "]  on Browser [" + type +"]");
     }
 
