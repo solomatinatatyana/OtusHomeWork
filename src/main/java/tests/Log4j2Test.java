@@ -1,11 +1,8 @@
 package tests;
 
 import config.BaseTest;
-import config.MyTestListener;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Test(groups = "smoke")

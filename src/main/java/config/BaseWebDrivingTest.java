@@ -1,5 +1,6 @@
 package config;
 
+import config.interfaces.TestDataConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
