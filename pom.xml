@@ -74,6 +74,12 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/java/smoke.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <!--<properties>
+                        <property>
+                            <name>listener</name>
+                            <value>com.otus.</value>
+                        </property>
+                    </properties>-->
                 </configuration>
             </plugin>
         </plugins>
