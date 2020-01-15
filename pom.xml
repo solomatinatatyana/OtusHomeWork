@@ -80,12 +80,12 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/java/smoke.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <!--<properties>
+                    <properties>
                         <property>
                             <name>listener</name>
-                            <value>com.otus.</value>
+                            <value>config.listeners.InfluxTestListener</value>
                         </property>
-                    </properties>-->
+                    </properties>
                 </configuration>
             </plugin>
             <plugin>
