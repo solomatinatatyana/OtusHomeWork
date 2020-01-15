@@ -1,6 +1,6 @@
 package config;
 
-import config.interfaces.TestDataConfig;
+import config.injection.interfaces.TestDataConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
@@ -13,8 +13,12 @@ public class BaseWebDrivingTest extends BaseTest {
     protected WebDriver driver;
     protected TestDataConfig testData;
 
+
     @BeforeClass(alwaysRun = true)
     public void setUp(){
+        super.setUp();
+        log.info("Test: [" + this.getClass().asSubclass(this.getClass()).getSimpleName() + "]");
+        log.info("Browser: [" + uiConfig.getBrowser() + "]");
         testData = ConfigFactory.create(TestDataConfig.class);
         //добавить DriverFactory
         //driver.manage().window().maximize();

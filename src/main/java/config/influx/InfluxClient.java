@@ -11,9 +11,8 @@ public class InfluxClient {
     private final static String CREATE_DATABASE = "CREATE DATABASE ";
     private final InfluxDB db;
 
-    public InfluxClient(){
-        db = InfluxDBFactory.connect("http://ip172-18-0-19-boe53arjagq000ekvj70-8086.direct.labs.play-with-docker.com/",
-                "root", "root");
+    public InfluxClient(InfluxConfig config){
+        db = InfluxDBFactory.connect(config.getHost(), config.getUser(), config.getPass());
         System.out.println(db.ping().isGood() ? "Influx Connected" : "Influx Connection Failed");
     }
 

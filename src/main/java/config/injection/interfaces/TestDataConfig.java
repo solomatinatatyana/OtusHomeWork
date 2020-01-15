@@ -1,4 +1,4 @@
-package config.interfaces;
+package config.injection.interfaces;
 
 import org.aeonbits.owner.Config;
 
