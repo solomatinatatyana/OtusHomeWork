@@ -22,7 +22,7 @@ public class InfluxClient {
         QueryResult.Result result = queryResult.getResults().get(0);
         boolean dbExists = result.getSeries().get(0).getValues().stream().anyMatch(val-> val.contains(dbName));
 
-        if(dbExists){
+        if(!dbExists){
             System.out.println("Create database " + dbName);
             db.query(new Query(CREATE_DATABASE + dbName));
         }

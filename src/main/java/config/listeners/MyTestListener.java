@@ -12,7 +12,7 @@ public class MyTestListener extends TestNG implements ISuiteListener{
     private final static String host = System.getProperty("influx.host", "http://192.168.99.100:8086");
     private final static String user = System.getProperty("influx.user", "root");
     private final static String pass = System.getProperty("influx.pass", "root");
-    private final static String db = System.getProperty("influx.db", "otusHM");
+    private final static String db = System.getProperty("influx.db", "firstDb");
     private final static String measurement = System.getProperty("influx.measurement", "STATS");
     private final static String envTag = System.getProperty("influx.envtag", "env2");
 
