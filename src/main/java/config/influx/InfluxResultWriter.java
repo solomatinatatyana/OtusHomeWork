@@ -1,14 +1,16 @@
 package config.influx;
 
+import junit.framework.AssertionFailedError;
 import org.influxdb.dto.Point;
+import org.junit.runner.notification.Failure;
 import org.testng.ITestContext;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class InfluxResultWriter {
-    //private final static Predicate<Failure> NEW_DEFECT = f -> f.getDescription().getAnnotation(JiraDefectId.class) != null;
-    //private final static Predicate<Failure> ASSERTION_FAILED = f -> f.getException().getClass().equals(AssertionFailedError.class);
-    //private final static Predicate<Failure> TEST_ERROR = f -> !f.getException().getClass().equals(AssertionFailedError.class);
+    private final static Predicate<Failure> ASSERTION_FAILED = f -> f.getException().getClass().equals(AssertionFailedError.class);
+    private final static Predicate<Failure> TEST_ERROR = f -> !f.getException().getClass().equals(AssertionFailedError.class);
 
     private final InfluxClient client;
     private final InfluxConfig config;
@@ -20,13 +22,14 @@ public class InfluxResultWriter {
         client.createDbIfNeeded(config.getDbName());
     }
 
-    public void writeStats(ITestContext context) {
+    public void writeStats(ITestContext result) {
         timestamp = System.currentTimeMillis();
-        writeTotal(context.getAllTestMethods().length);
-        writeSuccess(context.getAllTestMethods().length - context.getFailedTests().size());
-        writeFails( context.getFailedTests().size());
-        //writeAssertionErrors(context.getFailedTests().size());
-        //writeTestError(result.getFailures());
+        writeTotal(result.getAllTestMethods().length);
+        writeSuccess(result.getAllTestMethods().length - result.getFailedTests().size());
+        writeFails(result.getFailedTests().size());
+        /*writeAssertionErrors(result.getFailures());
+        writeTestError(result.getFailures());
+        writeNewDefects(result.getFailures());*/
 
         System.out.println("Статистика отправлена в Influx");
     }
