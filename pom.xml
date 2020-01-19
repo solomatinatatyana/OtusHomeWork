@@ -113,7 +113,7 @@
                     <properties>
                         <property>
                             <name>listener</name>
-                            <value>config.listeners.InfluxTestListener</value>
+                            <value>config.listeners.MyTestListener</value>
                         </property>
                     </properties>
                 </configuration>

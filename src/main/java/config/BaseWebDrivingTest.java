@@ -26,6 +26,7 @@ public class BaseWebDrivingTest extends BaseTest {
 
     @AfterClass(alwaysRun = true)
     public void tearDown(){
+        log.info("END of TEST - " + getClass().asSubclass(getClass().getSuperclass()).getSimpleName());
         if (driver != null) {
             driver.quit();
         }

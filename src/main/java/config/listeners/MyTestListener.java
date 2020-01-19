@@ -3,23 +3,24 @@ package config.listeners;
 import config.influx.InfluxClient;
 import config.influx.InfluxConfig;
 import config.influx.InfluxResultWriter;
-import org.testng.ISuite;
-import org.testng.ISuiteListener;
-import org.testng.TestNG;
+import config.injection.interfaces.InfluxDBConfig;
+import org.aeonbits.owner.ConfigFactory;
+import org.testng.*;
 
-public class MyTestListener extends TestNG implements ISuiteListener{
+public class MyTestListener implements ISuiteListener, ITestListener {
 
-    private final static String host = System.getProperty("influx.host", "http://192.168.99.100:8086");
-    private final static String user = System.getProperty("influx.user", "root");
-    private final static String pass = System.getProperty("influx.pass", "root");
-    private final static String db = System.getProperty("influx.db", "firstDb");
-    private final static String measurement = System.getProperty("influx.measurement", "STATS");
-    private final static String envTag = System.getProperty("influx.envtag", "env2");
+    private InfluxTestListener listener;
+    private InfluxDBConfig influxDBConfig;
 
-    private final InfluxTestListener listener;
-
-    public MyTestListener(){
-        InfluxConfig config = new InfluxConfig(host, user, pass, db, measurement, envTag);
+    public MyTestListener() {
+        influxDBConfig = ConfigFactory.create(InfluxDBConfig.class);
+        InfluxConfig config = new InfluxConfig(
+                influxDBConfig.getHost(),
+                influxDBConfig.getUser(),
+                influxDBConfig.getPassword(),
+                influxDBConfig.getDbName(),
+                influxDBConfig.getMeasurement(),
+                influxDBConfig.getEnvtag());
         InfluxClient client = new InfluxClient(config);
         InfluxResultWriter writer = new InfluxResultWriter(client, config);
         this.listener = new InfluxTestListener(writer);
@@ -33,9 +34,26 @@ public class MyTestListener extends TestNG implements ISuiteListener{
         System.out.println("END OF [" + suite.getXmlSuite().getName()+  "] SUITE");
     }
 
-    public void run(){
-        super.addListener(listener);
-        super.run();
-    }
+    @Override
+    public void onTestStart(ITestResult iTestResult) { }
 
+    @Override
+    public void onTestSuccess(ITestResult iTestResult) { }
+
+    @Override
+    public void onTestFailure(ITestResult iTestResult) { }
+
+    @Override
+    public void onTestSkipped(ITestResult iTestResult) { }
+
+    @Override
+    public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) { }
+
+    @Override
+    public void onStart(ITestContext iTestContext) { }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        listener.onFinish(context);
+    }
 }

@@ -26,7 +26,6 @@ public class FirstTest extends BaseWebDrivingTest{
 
     @Test(dataProvider = "browsers")
     public void test(BrowserType type) {
-        logger.info("Start test Class [" + getClass().getSimpleName() + "]  on Browser [" + type +"]");
         switch (type){
             case CHROME:
                 WebDriverManager.chromedriver().setup();
@@ -41,7 +40,6 @@ public class FirstTest extends BaseWebDrivingTest{
         driver.get(testData.getURL());
         System.out.println("Заголовок сайта: [" + driver.getTitle() + "]");
         Assert.assertEquals(driver.getCurrentUrl(),testData.getURL(),"Неверный URL");
-        logger.info("End of test Class [" + getClass().getSimpleName() + "]  on Browser [" + type +"]");
     }
 
     @AfterMethod( alwaysRun = true)

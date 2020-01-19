@@ -1,17 +1,11 @@
 package config.influx;
 
-import junit.framework.AssertionFailedError;
 import org.influxdb.dto.Point;
-import org.junit.runner.notification.Failure;
 import org.testng.ITestContext;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 public class InfluxResultWriter {
-    private final static Predicate<Failure> ASSERTION_FAILED = f -> f.getException().getClass().equals(AssertionFailedError.class);
-    private final static Predicate<Failure> TEST_ERROR = f -> !f.getException().getClass().equals(AssertionFailedError.class);
-
     private final InfluxClient client;
     private final InfluxConfig config;
     private long timestamp;
