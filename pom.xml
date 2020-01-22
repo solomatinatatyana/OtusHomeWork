@@ -116,6 +116,10 @@
                             <value>config.listeners.MyTestListener</value>
                         </property>
                     </properties>
+                    <systemPropertyVariables>
+                        <browser>CHROME</browser>
+                        <browser>${browser}</browser>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>

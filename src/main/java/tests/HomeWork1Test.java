@@ -12,10 +12,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import config.ui.BrowserType;
 
-@Test(groups = "smoke")
-public class FirstTest extends BaseWebDrivingTest{
+public class HomeWork1Test extends BaseWebDrivingTest{
 
-    private Logger logger = LogManager.getLogger(FirstTest.class);
+    private Logger logger = LogManager.getLogger(HomeWork1Test.class);
 
     @DataProvider(name = "browsers")
     public Object[][] Browsers() {
@@ -38,7 +37,7 @@ public class FirstTest extends BaseWebDrivingTest{
         }
         driver.manage().window().maximize();
         driver.get(testData.getURL());
-        System.out.println("Заголовок сайта: [" + driver.getTitle() + "]");
+        logger.info("Заголовок сайта: [" + driver.getTitle() + "]");
         Assert.assertEquals(driver.getCurrentUrl(),testData.getURL(),"Неверный URL");
     }
 
