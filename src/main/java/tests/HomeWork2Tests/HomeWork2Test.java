@@ -1,4 +1,4 @@
-package tests;
+package tests.HomeWork2Tests;
 
 import config.BaseWebDrivingTest;
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +11,7 @@ public class HomeWork2Test extends BaseWebDrivingTest{
 
     private Logger logger = LogManager.getLogger(HomeWork2Test.class);
 
-    @Test(description = "Перейти на Otus.ru")
+    @Test(description = "Перейти на otus.ru")
     public void goToMainPage() {
         driver.get(testData.getURL());
         logger.info("Заголовок сайта: [" + driver.getTitle() + "]");

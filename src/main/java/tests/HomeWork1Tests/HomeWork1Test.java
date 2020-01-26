@@ -1,4 +1,4 @@
-package tests;
+package tests.HomeWork1Tests;
 
 import config.BaseWebDrivingTest;
 import io.github.bonigarcia.wdm.WebDriverManager;

@@ -1,8 +1,8 @@
-package config.listeners;
+package config.HomeWork1.listeners;
 
-import config.influx.InfluxClient;
-import config.influx.InfluxConfig;
-import config.influx.InfluxResultWriter;
+import config.HomeWork1.influx.InfluxClient;
+import config.HomeWork1.influx.InfluxConfig;
+import config.HomeWork1.influx.InfluxResultWriter;
 import config.injection.interfaces.InfluxDBConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.testng.*;

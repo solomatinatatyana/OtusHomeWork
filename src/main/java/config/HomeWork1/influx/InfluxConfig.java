@@ -1,4 +1,4 @@
-package config.influx;
+package config.HomeWork1.influx;
 
 public class InfluxConfig {
     private final String host;

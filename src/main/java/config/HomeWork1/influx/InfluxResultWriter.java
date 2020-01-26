@@ -1,4 +1,4 @@
-package config.influx;
+package config.HomeWork1.influx;
 
 import org.influxdb.dto.Point;
 import org.testng.ITestContext;
@@ -21,26 +21,9 @@ public class InfluxResultWriter {
         writeTotal(result.getAllTestMethods().length);
         writeSuccess(result.getAllTestMethods().length - result.getFailedTests().size());
         writeFails(result.getFailedTests().size());
-        /*writeAssertionErrors(result.getFailures());
-        writeTestError(result.getFailures());
-        writeNewDefects(result.getFailures());*/
 
         System.out.println("Статистика отправлена в Influx");
     }
-
-    /*private void writeTestError(List<Failure> failures) {
-        int testErrorCount = (int) failures.stream().filter(TEST_ERROR).count();
-        System.out.println("Test with errors: " + testErrorCount);
-        Point p = getPoint("testError", testErrorCount);
-        client.writePoint(p);
-    }
-
-    private void writeAssertionErrors(List<Failure> failures) {
-        int assertionFailedCount = (int) failures.stream().filter(ASSERTION_FAILED).count();
-        System.out.println("Assertion failed tests: " + assertionFailedCount);
-        Point p = getPoint("assertionFailed", assertionFailedCount);
-        client.writePoint(p);
-    }*/
 
     private void writeTotal(int total) {
         System.out.println("Total: " + total);

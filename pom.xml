@@ -110,12 +110,12 @@
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/java/smoke.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <properties>
+                    <!--<properties>
                         <property>
                             <name>listener</name>
-                            <value>config.listeners.MyTestListener</value>
+                            <value>config.HomeWork1.listeners.MyTestListener</value>
                         </property>
-                    </properties>
+                    </properties>-->
                     <systemPropertyVariables>
                         <browser>CHROME</browser>
                         <browser>${browser}</browser>
