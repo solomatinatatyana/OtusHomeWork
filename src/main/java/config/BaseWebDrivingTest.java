@@ -27,8 +27,8 @@ public class BaseWebDrivingTest extends BaseTest {
     @BeforeClass(alwaysRun = true)
     public void setUp(){
         super.setUp();
-        log.info("Test: [" + this.getClass().asSubclass(this.getClass()).getSimpleName() + "]");
-        log.info("Browser: [" + BrowserType.valueOf(browser) + "]");
+        log.info("Test: [{}]",this.getClass().asSubclass(this.getClass()).getSimpleName());
+        log.info("Browser: [{}]",BrowserType.valueOf(browser));
         testData = ConfigFactory.create(TestDataConfig.class);
         this.options = new MutableCapabilities();
         this.webApp = new WebApplicationManager(BrowserType.valueOf(browser), options);
@@ -37,7 +37,7 @@ public class BaseWebDrivingTest extends BaseTest {
 
     @AfterClass(alwaysRun = true)
     public void tearDown(){
-        log.info("END of TEST - " + getClass().asSubclass(getClass().getSuperclass()).getSimpleName());
+        log.info("END of TEST - {}",getClass().asSubclass(getClass().getSuperclass()).getSimpleName());
         if (driver != null) {
             driver.quit();
         }
