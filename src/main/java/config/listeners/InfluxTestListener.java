@@ -1,6 +1,6 @@
-package config.HomeWork1.listeners;
+package config.listeners;
 
-import config.HomeWork1.influx.InfluxResultWriter;
+import config.influx.InfluxResultWriter;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;

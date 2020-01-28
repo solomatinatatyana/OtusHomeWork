@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;
 
-@Test(groups = "smoke")
+//@Test(groups = "smoke")
 public class HomeWork3Test extends BaseWebDrivingTest {
     private Logger logger = LogManager.getLogger(HomeWork3Test.class);
 

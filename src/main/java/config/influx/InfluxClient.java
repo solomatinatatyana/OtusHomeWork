@@ -1,4 +1,4 @@
-package config.HomeWork1.influx;
+package config.influx;
 
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;

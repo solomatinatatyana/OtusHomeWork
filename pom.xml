@@ -113,7 +113,7 @@
                     <!--<properties>
                         <property>
                             <name>listener</name>
-                            <value>config.HomeWork1.listeners.MyTestListener</value>
+                            <value>config.listeners.MyTestListener</value>
                         </property>
                     </properties>-->
                     <systemPropertyVariables>

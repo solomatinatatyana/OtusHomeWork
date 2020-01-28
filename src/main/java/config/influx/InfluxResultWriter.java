@@ -1,4 +1,4 @@
-package config.HomeWork1.influx;
+package config.influx;
 
 import org.influxdb.dto.Point;
 import org.testng.ITestContext;
