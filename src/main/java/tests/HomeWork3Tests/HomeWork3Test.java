@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.not;
 
 //@Test(groups = "smoke")
 public class HomeWork3Test extends BaseWebDrivingTest {
@@ -54,8 +55,8 @@ public class HomeWork3Test extends BaseWebDrivingTest {
                 ModelSmartPhones.XIAOMI.getModel()));
         driver.get("https://ya.ru");
         driver.get(baseUrl+"catalog--mobilnye-telefony/54726/list?hid=91491&local-offers-first=0&onstock=1");
-        this.filterSmartPhones(testSmartPhones);
-        this.sortByPrice();
+        filterSmartPhones(testSmartPhones);
+        sortByPrice();
     }
 
     @Test(description = "Проверить, что отобразилась плашка 'Товар {товар} добавлен к сравнению'",
@@ -80,6 +81,7 @@ public class HomeWork3Test extends BaseWebDrivingTest {
         driver.findElement(By.xpath(".//a[.//span[text()='Сравнение']]")).click();
         /*Проверить, что в списке товаров 2 позиции*/
         int countGoodInComparing = driver.findElements(By.cssSelector(".n-compare-content__line>div.n-compare-cell")).size();
+        log.info("Количество товаров для сравнения добавлено: {}", countGoodInComparing);
         Assert.assertEquals(countGoodInComparing,2,"Неверное количество товаров добавлено в сравнение");
     }
 
@@ -87,21 +89,31 @@ public class HomeWork3Test extends BaseWebDrivingTest {
             "Проверить, что в списке характеристик появилась позиция 'Операционная система'",
             dependsOnMethods = "checkComparingGoods", alwaysRun = true)
     public void checkOperationSystem(){
+        log.info("Переход на вкладку 'Все характеристики'");
         WebElement allCharacteristics = driver.findElement(By.xpath(".//span[@class='link n-compare-show-controls__all' and @role='button']"));
         allCharacteristics.click();
         List<WebElement> characteristics = driver.findElements(By.cssSelector(".n-compare-row-name"));
+        WebDriverWait wait = new WebDriverWait(driver,50L);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div[text()='Операционная система']")));
         characteristics.forEach(element->allCharacteristicsList.add(element.getText()));
         MatcherAssert.assertThat("В общих характеристиках отсутсвует характеристика - ОПЕРАЦИОННАЯ СИСТЕМА",
                 allCharacteristicsList, hasItem("ОПЕРАЦИОННАЯ СИСТЕМА"));
     }
 
-    /*@Test(description = "Нажать на опцию 'различающиеся характеристики'. " +
+    @Test(description = "Нажать на опцию 'различающиеся характеристики'. " +
             "Проверить, что позиция 'Операционная система' не отображается в списке характеристик",
-            dependsOnMethods = "checkOperationSystem")
+            dependsOnMethods = "checkOperationSystem", alwaysRun = true)
     public void checkOperationSystemNoInList(){
-        //todo
-        log.info("Проверка отсутствия характеристики 'Операционная система'");
-    }*/
+        log.info("Переход на вкладку 'различающиеся характеристики'");
+        WebElement differentCharacteristics = driver.findElement(By.xpath(".//span[@class='link n-compare-show-controls__diff' and @role='button']"));
+        differentCharacteristics.click();
+        List<WebElement> characteristics = driver.findElements(By.cssSelector(".n-compare-row-name"));
+        WebDriverWait wait = new WebDriverWait(driver,50L);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(".//div[text()='Операционная система']")));
+        characteristics.forEach(element->differentCharacteristicsList.add(element.getText()));
+        MatcherAssert.assertThat("В общих характеристиках присутсвует характеристика - ОПЕРАЦИОННАЯ СИСТЕМА",
+                differentCharacteristicsList, not(hasItem("ОПЕРАЦИОННАЯ СИСТЕМА")));
+    }
 //-------------------------------------------------METHODS--------------------------------------------------------------
     private void filterSmartPhones(List<String> smartPhones){
         WebElement fieldsetBrand = driver.findElement(By.xpath(".//fieldset[@data-autotest-id='7893318']"));
