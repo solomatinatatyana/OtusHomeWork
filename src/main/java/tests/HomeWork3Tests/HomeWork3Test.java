@@ -137,7 +137,7 @@ public class HomeWork3Test extends BaseWebDrivingTest {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(".//div[contains(@class,'preloadable__preloader')]")));
         WebElement firstGoodByModel = driver.findElement(By.xpath(LIST_OF_GOODS + "/..//div[contains(@class,'n-product-toolbar__item')]"));
         firstGoodByModel.click();
-        nameOfGood = driver.findElement(By.cssSelector("a[title*="+model+"]")).getAttribute("title");
+        nameOfGood = driver.findElement(By.xpath(LIST_OF_GOODS)).getAttribute("title");
         log.info("Телефон [{}] добавлен к сравнению", nameOfGood);
     }
 
