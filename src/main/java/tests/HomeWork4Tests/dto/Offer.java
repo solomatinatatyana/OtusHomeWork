@@ -1,6 +1,6 @@
 package tests.HomeWork4Tests.dto;
 
-public class Car {
+public class Offer {
     private String deepLink;
     private String year;
     private String price;
@@ -8,9 +8,9 @@ public class Car {
     private String model;
     private String volume;
 
-    public Car() { }
+    public Offer() { }
 
-    public Car(String deepLink, String year, String price, String type, String model, String volume) {
+    public Offer(String deepLink, String year, String price, String type, String model, String volume) {
         this.deepLink = deepLink;
         this.year = year;
         this.price = price;
