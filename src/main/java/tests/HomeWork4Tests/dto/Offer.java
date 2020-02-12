@@ -4,7 +4,7 @@ public class Offer {
     private String deepLink;
     private String year;
     private String price;
-    private String type;
+    private String car;
     private String model;
     private String volume;
 
@@ -14,9 +14,18 @@ public class Offer {
         this.deepLink = deepLink;
         this.year = year;
         this.price = price;
-        this.type = type;
+        this.car = type;
         this.model = model;
         this.volume = volume;
+    }
+
+    public Offer(Offer offer) {
+        this.deepLink = offer.deepLink;
+        this.model = offer.model;
+        this.price = offer.price;
+        this.car = offer.car;
+        this.volume = offer.volume;
+        this.year = offer.year;
     }
 
     public String getDeepLink() { return deepLink; }
@@ -31,9 +40,9 @@ public class Offer {
 
     public void setPrice(String price) { this.price = price; }
 
-    public String getType() { return type; }
+    public String getType() { return car; }
 
-    public void setType(String type) { this.type = type; }
+    public void setType(String type) { this.car = type; }
 
     public String getModel() { return model; }
 
@@ -49,7 +58,7 @@ public class Offer {
                 "deepLink='" + deepLink + '\'' +
                 ", year='" + year + '\'' +
                 ", price='" + price + '\'' +
-                ", type='" + type + '\'' +
+                ", car='" + car + '\'' +
                 ", model='" + model + '\'' +
                 ", volume='" + volume + '\'' +
                 '}';

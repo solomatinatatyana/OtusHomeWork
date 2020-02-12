@@ -7,6 +7,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -20,7 +23,10 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     private SoftAssert softAssert = new SoftAssert();
     //=======================Тестовые данные=================
     private static final String URL = "https://www.drive2.ru/cars/?sort=selling";
+    private String currentUrl;
     private List<String> carsList = new ArrayList<>();
+    private List<Offer> offerList = new ArrayList<>();
+    private List<WebElement> carsListElements = new ArrayList<>();
     /*
     * собрать все объявления о продаже в csv-файл (ссылка, год автомобиля, цена, марка, модель, объем двигателя)
     */
@@ -29,34 +35,48 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
         log.info("Переходим на сайт -> {}", URL);
         driver.get(URL);
         log.info("Получаем список машин для сбора информации");
-        List<WebElement> carsListElements  = driver.findElements(By.cssSelector(".c-makes__item.is-important"));
-        carsListElements.forEach(element->{
-            carsList.add(element.getText());
-            System.out.println(element.getText());
-        });
+        carsList = getCarsList();
     }
 
-    @Test(description = "собрать все объявления о продаже в csv-файл")
+    @Test(description = "собрать все объявления о продаже")
     public void checkGetSellingCars(){
         log.info("Получаем количество объявлений по кадой марке машины");
-
-        carsList.forEach(car->{
+        carsList.forEach(car ->{
+            List<String> modelsList = new ArrayList<>();
             driver.findElement(By.xpath(".//a[contains(text(),'"+ car +"')]")).click();
             while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']")))
                 ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,50000)");
-            /*
-            * .//div[contains(@class, 'c-darkening-hover-container') and .//div/span[contains(text(),'Acura ZDX Grey Wolf')]]/a
-            * */
-            int countOffers = driver.findElements(By.cssSelector(".c-darkening-hover-container")).size();
-            log.info("Title: " + driver.findElement(By.xpath(".//div[@class = 'c-car-card-sa__caption']/span")).getText());
-            //список названий  c-car-card-sa__caption
-            log.info("Колчество предложений о продажи {} - {}", car, countOffers);
+            int countOffers = driver.findElements(By.cssSelector(".c-darkening-hover-container")).size()-1;
+            log.info("Количество предложений о продажи {} - {}", car, countOffers);
+            List<WebElement> modelListElements = driver.findElements(By.xpath(".//div[@class = 'c-car-card-sa__caption']/span"));
+            modelListElements.forEach(e->{
+                if (e.getText().contains("\'")) System.out.println(e.getText().replace("'", " "));
+                modelsList.add(e.getText());
+                System.out.println(e.getText());
+            });
+            modelsList.forEach(e->{
+                currentUrl = driver.getCurrentUrl();
+                Offer offer = new Offer();
+                log.info(e);
+                while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']")))
+                    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,50000)");
+                //переходим на объявление
+                driver.findElement(By.xpath(".//div[contains(@class, 'c-darkening-hover-container') and .//div/span[contains(text(),'"+ e +"')]]/a")).click();
+                offer.setModel(e);
+                WebElement price = (new WebDriverWait(driver,100))
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
+                offer.setPrice(price.getText());
+                offerList.add(new Offer(offer));
+                //здесь будет запись объекта в файл csv
+                log.info("Возвращаемся к списку моделей ...");
+                driver.get(currentUrl);
+            });
             log.info("Возвращамся назад к маркам авто ...");
             driver.get(URL);
+            offerList.forEach(elem-> System.out.println(elem.toString()));
         });
 
-
-
+        Assert.assertNotNull(offerList);
     }
     //-------------------------------------------------METHODS----------------------------------------------------------
     private boolean isElementPresent(By by) {
@@ -68,14 +88,25 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
         }
     }
 
-
-
-    public List<WebElement> getAllSalesOffersByCar(){
-        return driver.findElements(By.cssSelector(""));
+    public List<String> getCarsList(){
+        carsListElements  = driver.findElements(By.cssSelector(".c-makes__item.is-important"));
+        carsListElements.forEach(element->{
+            carsList.add(element.getText());
+            System.out.println(element.getText());
+        });
+        return carsList;
     }
 
+    public List<Offer> getAllOffersListByCar(List<String> carsList){
 
-    public void writeToFile(Offer offer){
+        return offerList;
+    }
+
+    public void writeToFile(List<Offer> offerList){
+
+    }
+
+    public void readFromFile(String file){
 
     }
 }
