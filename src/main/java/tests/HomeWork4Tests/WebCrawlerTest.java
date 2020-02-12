@@ -50,9 +50,12 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
             log.info("Количество предложений о продажи {} - {}", car, countOffers);
             List<WebElement> modelListElements = driver.findElements(By.xpath(".//div[@class = 'c-car-card-sa__caption']/span"));
             modelListElements.forEach(e->{
-                if (e.getText().contains("\'")) System.out.println(e.getText().replace("'", " "));
-                modelsList.add(e.getText());
-                System.out.println(e.getText());
+                String text =  e.getText();
+                if (text.contains("\'")) {
+                    text = text.replace("'", " ");
+                }
+                modelsList.add(text);
+                System.out.println(text);
             });
             modelsList.forEach(e->{
                 currentUrl = driver.getCurrentUrl();
