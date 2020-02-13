@@ -1,12 +1,20 @@
 package tests.HomeWork4Tests.utils;
 
-public class CSVHelper {
+import tests.HomeWork4Tests.dto.Offer;
 
-    public void readCSVFile(){
+import java.util.List;
 
+public class CSVHelper implements ICSVHelper{
+
+    public CSVHelper() { }
+
+    @Override
+    public List<String> readFromFile() {
+        return null;
     }
 
-    public void writeCSVFile(){
+    @Override
+    public void writeToFile(List<Offer> offerList) {
 
     }
 }

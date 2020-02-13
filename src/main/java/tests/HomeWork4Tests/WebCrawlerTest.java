@@ -26,7 +26,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     private String currentUrl;
     private List<String> carsList = new ArrayList<>();
     private List<Offer> offerList = new ArrayList<>();
-    private List<WebElement> carsListElements = new ArrayList<>();
+    //private List<WebElement> carsListElements = new ArrayList<>();
     /*
     * собрать все объявления о продаже в csv-файл (ссылка, год автомобиля, цена, марка, модель, объем двигателя)
     */
@@ -41,44 +41,12 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     @Test(description = "собрать все объявления о продаже")
     public void checkGetSellingCars(){
         log.info("Получаем количество объявлений по кадой марке машины");
-        carsList.forEach(car ->{
-            List<String> modelsList = new ArrayList<>();
-            driver.findElement(By.xpath(".//a[contains(text(),'"+ car +"')]")).click();
-            while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']")))
-                ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,50000)");
-            int countOffers = driver.findElements(By.cssSelector(".c-darkening-hover-container")).size()-1;
-            log.info("Количество предложений о продажи {} - {}", car, countOffers);
-            List<WebElement> modelListElements = driver.findElements(By.xpath(".//div[@class = 'c-car-card-sa__caption']/span"));
-            modelListElements.forEach(e->{
-                String text =  e.getText();
-                if (text.contains("\'")) {
-                    text = text.replace("'", " ");
-                }
-                modelsList.add(text);
-                System.out.println(text);
-            });
-            modelsList.forEach(e->{
-                currentUrl = driver.getCurrentUrl();
-                Offer offer = new Offer();
-                log.info(e);
-                while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']")))
-                    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,50000)");
-                //переходим на объявление
-                driver.findElement(By.xpath(".//div[contains(@class, 'c-darkening-hover-container') and .//div/span[contains(text(),'"+ e +"')]]/a")).click();
-                offer.setModel(e);
-                WebElement price = (new WebDriverWait(driver,100))
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
-                offer.setPrice(price.getText());
-                offerList.add(new Offer(offer));
-                //здесь будет запись объекта в файл csv
-                log.info("Возвращаемся к списку моделей ...");
-                driver.get(currentUrl);
-            });
-            log.info("Возвращамся назад к маркам авто ...");
-            driver.get(URL);
-            offerList.forEach(elem-> System.out.println(elem.toString()));
-        });
-
+        try{
+        offerList = getAllOffersListByCar(carsList);
+        //helpers.csvHelper.writeToFile(offerList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally { helpers.csvHelper.writeToFile(offerList); }
         Assert.assertNotNull(offerList);
     }
     //-------------------------------------------------METHODS----------------------------------------------------------
@@ -92,7 +60,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     }
 
     public List<String> getCarsList(){
-        carsListElements  = driver.findElements(By.cssSelector(".c-makes__item.is-important"));
+        List<WebElement> carsListElements  = driver.findElements(By.cssSelector(".c-makes__item.is-important"));
         carsListElements.forEach(element->{
             carsList.add(element.getText());
             System.out.println(element.getText());
@@ -101,15 +69,45 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     }
 
     public List<Offer> getAllOffersListByCar(List<String> carsList){
+        carsList.forEach(car ->{
+            List<String> modelsList = new ArrayList<>();
+            driver.findElement(By.xpath(".//a[contains(text(),'"+ car +"')]")).click();
+            while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']"))) scrollBy(50000);
+            int countOffers = driver.findElements(By.cssSelector(".c-darkening-hover-container")).size()-1;
+            log.info("Количество предложений о продажи {} - {}", car, countOffers);
+            setModelList(modelsList);
+            modelsList.forEach(e->{
+                currentUrl = driver.getCurrentUrl();
 
+                log.info(e);
+                while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']"))) scrollBy(50000);
+                //переходим на объявление
+                driver.findElement(By.xpath(".//div[contains(@class, 'c-darkening-hover-container') and .//div/span[contains(text(),'"+ e +"')]]/a")).click();
+                WebElement price = (new WebDriverWait(driver,100))
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
+                offerList.add(new Offer(Offer.anOffer().withModel(e).withPrice(price.getText()).build()));
+                log.info("Возвращаемся к списку моделей ...");
+                driver.get(currentUrl);
+            });
+            log.info("Возвращамся назад к маркам авто ...");
+            driver.get(URL);
+            offerList.forEach(elem-> System.out.println(elem.toString()));
+        });
         return offerList;
     }
 
-    public void writeToFile(List<Offer> offerList){
-
+    public void setModelList(List<String> modelsList){
+        List<WebElement> modelListElements = driver.findElements(By.xpath(".//div[@class = 'c-car-card-sa__caption']/span"));
+        modelListElements.forEach(e->{
+            String text =  e.getText();
+            if (text.contains("\'")) {
+                int indexOfSilva = text.indexOf("De'Silva");
+                text = text.substring(0, indexOfSilva);
+            }
+            modelsList.add(text);
+            System.out.println(text);
+        });
     }
 
-    public void readFromFile(String file){
-
-    }
+    public void scrollBy(int y){ ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,"+ y +")"); }
 }

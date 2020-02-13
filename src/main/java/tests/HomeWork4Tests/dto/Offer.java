@@ -40,9 +40,9 @@ public class Offer {
 
     public void setPrice(String price) { this.price = price; }
 
-    public String getType() { return car; }
+    public String getCar() { return car; }
 
-    public void setType(String type) { this.car = type; }
+    public void setCar(String car) { this.car = car; }
 
     public String getModel() { return model; }
 
@@ -51,6 +51,58 @@ public class Offer {
     public String getVolume() { return volume; }
 
     public void setVolume(String volume) { this.volume = volume; }
+
+    public static OfferBuilder anOffer() {return new OfferBuilder();}
+
+    public static final class OfferBuilder{
+        private String deepLink;
+        private String year;
+        private String price;
+        private String car;
+        private String model;
+        private String volume;
+
+        public OfferBuilder withDeepLink(String deepLink) {
+            this.deepLink = deepLink;
+            return this;
+        }
+
+        public OfferBuilder withYear(String year) {
+            this.year = year;
+            return this;
+        }
+
+        public OfferBuilder withPrice(String price) {
+            this.price = price;
+            return this;
+        }
+
+        public OfferBuilder withCar(String car) {
+            this.car = car;
+            return this;
+        }
+
+        public OfferBuilder withModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        public OfferBuilder withVolume(String volume) {
+            this.volume = volume;
+            return this;
+        }
+
+        public Offer build(){
+            Offer offer = new Offer();
+            offer.setCar(car);
+            offer.setPrice(price);
+            offer.setModel(model);
+            offer.setDeepLink(deepLink);
+            offer.setVolume(volume);
+            offer.setYear(year);
+            return offer;
+        }
+    }
 
     @Override
     public String toString() {
