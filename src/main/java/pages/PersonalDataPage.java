@@ -1,6 +1,8 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import ru.yandex.qatools.htmlelements.element.Button;
@@ -17,11 +19,14 @@ public class PersonalDataPage extends AbstractPage {
         PageFactory.initElements(new HtmlElementDecorator(driver), this);
     }
 
+    public By communicationMethod = By.xpath(".//div[span[contains(text(),'Способ связи')]]");
+
     @FindBy(xpath = ".//button[contains(text(), 'Добавить')]")
     public Button addContactButton;
 
-    @FindBy(xpath = ".//div[span[contains(text(),'Способ связи')]]")
-    public List<HtmlElement> communicationMethod;
+    // .//div[contains(@class,'container__row js-formset-row')]/
+    /*@FindBy(xpath = ".//div[span[contains(text(),'Способ связи')]]")
+    public List<WebElement> communicationMethod;*/
 
     @FindBy(xpath = ".//input[@name= 'contact-0-value']")
     public TextInput communicationTextInput0;
@@ -34,4 +39,7 @@ public class PersonalDataPage extends AbstractPage {
 
     @FindBy(xpath = ".//button[@title= 'WhatsApp']")
     public Button watsAppButton;
+
+    @FindBy(xpath = ".//button[@title= 'Сохранить и продолжить']")
+    public Button saveButton;
 }

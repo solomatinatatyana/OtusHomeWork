@@ -4,6 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 
@@ -41,6 +44,8 @@ public class ProfilePage extends AbstractPage{
     public HtmlElement documents;
 
     public void goToBiography(){
+        WebDriverWait wait = new WebDriverWait(driver,50L);
+        wait.until(ExpectedConditions.visibilityOf(biography));
         this.biography.click();
     }
 
