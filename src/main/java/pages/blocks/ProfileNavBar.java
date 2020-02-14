@@ -1,24 +1,12 @@
-package pages;
+package pages.blocks;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import ru.yandex.qatools.htmlelements.annotations.Name;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
-import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 
-import java.util.List;
-
-public class ProfilePage extends AbstractPage{
-
-    public ProfilePage(WebDriver driver) {
-        super(driver);
-        PageFactory.initElements(new HtmlElementDecorator(driver), this);
-    }
-
-    @FindBy(xpath = ".//a[@class = 'learning-item__box']")
-    public List<WebElement> learningBox;
-
+@Name("Search form")
+@FindBy(xpath = ".//div[@class = 'nav__items']")
+public class ProfileNavBar extends HtmlElement {
     @FindBy(xpath = ".//a[@title = 'Мои курсы']")
     public HtmlElement myCourses;
 
@@ -39,9 +27,5 @@ public class ProfilePage extends AbstractPage{
 
     @FindBy(xpath = ".//a[@title = 'Документы']")
     public HtmlElement documents;
-
-    public void goToBiography(){
-        this.biography.click();
-    }
 
 }

@@ -8,6 +8,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.AbstractPage;
+import ru.yandex.qatools.htmlelements.element.Button;
+import ru.yandex.qatools.htmlelements.element.TextInput;
+import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 
 public class LoginPageOtus extends AbstractPage implements ILoginPage{
 
@@ -18,23 +21,23 @@ public class LoginPageOtus extends AbstractPage implements ILoginPage{
 
     /**Кнопка "Войти и Регистрация"*/
     @FindBy(css = "button[class='header2__auth js-open-modal']")
-    public WebElement signButton;
+    public Button signButton;
 
     /**Поле "Логин"*/
     @FindBy(xpath = ".//input[@type= 'email']")
-    public WebElement usernameField;
+    public TextInput usernameField;
 
     /**Поле "Пароль"*/
     @FindBy(css = "input[type=password]")
-    public WebElement passwordField;
+    public TextInput passwordField;
 
     /**Кнопка "Войти"*/
     @FindBy(css = "button[type='submit']")
-    public WebElement submitButton;
+    public Button submitButton;
 
     public LoginPageOtus(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(new HtmlElementDecorator(driver), this);
     }
 
     @Override
@@ -58,9 +61,10 @@ public class LoginPageOtus extends AbstractPage implements ILoginPage{
        .until(ExpectedConditions.visibilityOfElementLocated(loginform)));
         loginForm.findElement(username).clear();
         loginForm.findElement(username).sendKeys(login);
+        //this.usernameField.click();
         this.passwordField.clear();
         this.passwordField.sendKeys(password);
-        this.submitButton.click();
+        //this.submitButton.click();
         loginForm.findElement(submit).click();
     }
 

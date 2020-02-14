@@ -121,6 +121,17 @@
             <artifactId>htmlelements-matchers</artifactId>
             <version>1.8</version>
         </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.htmlelements</groupId>
+            <artifactId>htmlelements-thucydides</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.1</version>
+        </dependency>
 
     </dependencies>
     <build>
