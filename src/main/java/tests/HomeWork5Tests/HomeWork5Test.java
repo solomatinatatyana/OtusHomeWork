@@ -2,59 +2,47 @@ package tests.HomeWork5Tests;
 
 import config.BaseWebDrivingTest;
 import config.LoginConstants;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import pages.login.ILoginPage;
 import pages.login.LoginPageOtus;
-import pages.otusPages.*;
-import pages.otusPages.ProfilePages.EducationPage;
+import pages.otusPages.ProfilePage;
 import pages.otusPages.ProfilePages.PersonalDataPage;
-import pages.otusPages.ProfilePages.ProjectsPage;
-import pages.otusPages.ProfilePages.SkillsPage;
 import ru.yandex.qatools.htmlelements.element.TextInput;
 
 public class HomeWork5Test extends BaseWebDrivingTest {
+    private SoftAssert softAssert = new SoftAssert();
 
     private ILoginPage loginPage;
     private ProfilePage profilePage;
     private PersonalDataPage dataPage;
-    private SkillsPage skillsPage;
-    private ProjectsPage projectsPage;
-    private EducationPage educationPage;
-
-    @BeforeClass(alwaysRun = true)
-    public void before(){
-        this.init();
-        //добавить проверку на подготовку окружения для теста
-    }
 
     private void init(){
         //инициализация страниц
         loginPage = new LoginPageOtus(webApp.getDriver());
         profilePage = new ProfilePage(webApp.getDriver());
         dataPage = new PersonalDataPage(webApp.getDriver());
-        skillsPage = new SkillsPage(webApp.getDriver());
-        projectsPage = new ProjectsPage(webApp.getDriver());
-        educationPage = new EducationPage(webApp.getDriver());
     }
 
     //=======================Тестовые данные=================
-    //private Contact contact1;
-    //private Contact contact2;
+    private static final String  contactText1 = "79035808468";
+    private static final String  contactText2 = "text2";
+
     @Test()
     public void checkProfile(){
-        //this.init();
+        this.init();
         loginPage.doLogin(testData.getURL(), LoginConstants.AUTH_OTUS.getLogin(), LoginConstants.AUTH_OTUS.getPassword());
         goToProfile();
         setContactInfo();
         openNewBrowser();
         loginPage.doLogin(testData.getURL(), LoginConstants.AUTH_OTUS.getLogin(), LoginConstants.AUTH_OTUS.getPassword());
         goToProfile();
-        String contactText1 = dataPage.communicationTextInput0.getEnteredText();
-        Assert.assertEquals(contactText1, "text1", "Неверный текст у контакта 1");
-        //проверка раздела о себе
+        String currentContactText1 = dataPage.communicationTextInput0.getEnteredText();
+        //String currentContactText2 = dataPage.communicationTextInput1.getEnteredText();
+        softAssert.assertEquals(currentContactText1, contactText1, "Неверный текст у контакта 1");
+        //softAssert.assertEquals(currentContactText2, contactText2, "Неверный текст у контакта 2");
+        softAssert.assertAll();
     }
 
 
@@ -66,10 +54,10 @@ public class HomeWork5Test extends BaseWebDrivingTest {
 
     private void setContactInfo(){
         dataPage.addContactButton.click();
-        dataPage.selectCommunicationMethod(dataPage.watsAppButton);
-        setInfo(dataPage.communicationTextInput0,"text1");
+        dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
+        setInfo(dataPage.communicationTextInput0,contactText1);
+        //dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
         //setInfo(dataPage.communicationTextInput1,"text2");
-        //dataPage.selectCommunicationMethod(dataPage.watsAppButton);
         saveInfo();
     }
 
@@ -86,9 +74,6 @@ public class HomeWork5Test extends BaseWebDrivingTest {
 
     private void saveInfo(){
         dataPage.saveButton.click();
-        skillsPage.saveButton.click();
-        projectsPage.saveButton.click();
-        educationPage.saveButton.click();
     }
 
     private void openNewBrowser(){
@@ -98,8 +83,10 @@ public class HomeWork5Test extends BaseWebDrivingTest {
     }
 
     private void clearContactsOnProfile(){
-        //goToProfile();
-        dataPage.removeContactButton.click();
+        dataPage.contactBlock0.findElement(dataPage.removeContactButton).click();
+        /*WebDriverWait wait = new WebDriverWait(driver, 50L);
+        wait.until(ExpectedConditions.presenceOfElementLocated(dataPage.contBlock1));
+        dataPage.contactBlock1.findElement(dataPage.removeContactButton).click();*/
         saveInfo();
     }
 
