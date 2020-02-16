@@ -1,12 +1,14 @@
-package pages.blocks;
+package pages.otusBlocks.blocks;
 
 import org.openqa.selenium.support.FindBy;
+import ru.yandex.qatools.htmlelements.annotations.Block;
 import ru.yandex.qatools.htmlelements.annotations.Name;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 
-@Name("Search form")
-@FindBy(xpath = ".//div[@class = 'nav__items']")
+@Name("ProfileNavBar")
+@Block(@FindBy( xpath = ".//div[@class = 'nav__items']"))
 public class ProfileNavBar extends HtmlElement {
+
     @FindBy(xpath = ".//a[@title = 'Мои курсы']")
     public HtmlElement myCourses;
 
@@ -27,5 +29,4 @@ public class ProfileNavBar extends HtmlElement {
 
     @FindBy(xpath = ".//a[@title = 'Документы']")
     public HtmlElement documents;
-
 }

@@ -9,12 +9,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.AbstractPage;
 import ru.yandex.qatools.htmlelements.element.Button;
-import ru.yandex.qatools.htmlelements.element.TextInput;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 
 public class LoginPageOtus extends AbstractPage implements ILoginPage{
 
-    private By loginform = By.cssSelector("form.new-log-reg__form.js-login");
+    private By loginForm = By.cssSelector("form.new-log-reg__form.js-login");
     private By username = By.cssSelector("input[name=email]");
     private By pass = By.cssSelector("input[type=password]");
     private By submit = By.cssSelector("button[type='submit']");
@@ -22,18 +21,6 @@ public class LoginPageOtus extends AbstractPage implements ILoginPage{
     /**Кнопка "Войти и Регистрация"*/
     @FindBy(css = "button[class='header2__auth js-open-modal']")
     public Button signButton;
-
-    /**Поле "Логин"*/
-    @FindBy(xpath = ".//input[@type= 'email']")
-    public TextInput usernameField;
-
-    /**Поле "Пароль"*/
-    @FindBy(css = "input[type=password]")
-    public TextInput passwordField;
-
-    /**Кнопка "Войти"*/
-    @FindBy(css = "button[type='submit']")
-    public Button submitButton;
 
     public LoginPageOtus(WebDriver driver) {
         super(driver);
@@ -57,15 +44,13 @@ public class LoginPageOtus extends AbstractPage implements ILoginPage{
 
     private void loginUI(String login, String password) {
         this.signButton.click();
-        WebElement loginForm = (new WebDriverWait(driver,50L)
-       .until(ExpectedConditions.visibilityOfElementLocated(loginform)));
-        loginForm.findElement(username).clear();
-        loginForm.findElement(username).sendKeys(login);
-        //this.usernameField.click();
-        this.passwordField.clear();
-        this.passwordField.sendKeys(password);
-        //this.submitButton.click();
-        loginForm.findElement(submit).click();
+        WebElement loginFormElem = (new WebDriverWait(driver,50L)
+       .until(ExpectedConditions.visibilityOfElementLocated(loginForm)));
+        loginFormElem.findElement(username).clear();
+        loginFormElem.findElement(username).sendKeys(login);
+        loginFormElem.findElement(pass).clear();
+        loginFormElem.findElement(pass).sendKeys(password);
+        loginFormElem.findElement(submit).click();
     }
 
     private void login(String login, String password){loginUI(login, password); }
