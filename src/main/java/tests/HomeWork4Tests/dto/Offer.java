@@ -1,31 +1,31 @@
 package tests.HomeWork4Tests.dto;
 
 public class Offer {
-    private String deepLink;
-    private String year;
-    private String price;
     private String car;
     private String model;
     private String volume;
+    private String year;
+    private String price;
+    private String deepLink;
 
     public Offer() { }
 
-    public Offer(String deepLink, String year, String price, String type, String model, String volume) {
-        this.deepLink = deepLink;
-        this.year = year;
-        this.price = price;
-        this.car = type;
+    public Offer(String car, String model,  String volume, String year, String price, String deepLink) {
+        this.car = car;
         this.model = model;
         this.volume = volume;
+        this.year = year;
+        this.price = price;
+        this.deepLink = deepLink;
     }
 
     public Offer(Offer offer) {
-        this.deepLink = offer.deepLink;
-        this.model = offer.model;
-        this.price = offer.price;
         this.car = offer.car;
+        this.model = offer.model;
         this.volume = offer.volume;
         this.year = offer.year;
+        this.price = offer.price;
+        this.deepLink = offer.deepLink;
     }
 
     public String getDeepLink() { return deepLink; }
@@ -55,12 +55,12 @@ public class Offer {
     public static OfferBuilder anOffer() {return new OfferBuilder();}
 
     public static final class OfferBuilder{
-        private String deepLink;
-        private String year;
-        private String price;
         private String car;
         private String model;
         private String volume;
+        private String year;
+        private String price;
+        private String deepLink;
 
         public OfferBuilder withDeepLink(String deepLink) {
             this.deepLink = deepLink;
@@ -106,7 +106,7 @@ public class Offer {
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "Offer{" +
                 "deepLink='" + deepLink + '\'' +
                 ", year='" + year + '\'' +
                 ", price='" + price + '\'' +

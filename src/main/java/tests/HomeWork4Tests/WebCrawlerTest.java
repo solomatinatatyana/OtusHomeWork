@@ -43,11 +43,14 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
         log.info("Получаем количество объявлений по кадой марке машины");
         try{
         offerList = getAllOffersListByCar(carsList);
-        //helpers.csvHelper.writeToFile(offerList);
+        helpers.csvHelper.writeToFile(offerList);
         }catch (Exception e){
             e.printStackTrace();
-        }finally { helpers.csvHelper.writeToFile(offerList); }
-        Assert.assertNotNull(offerList);
+        }finally {
+            Assert.assertNotNull(offerList, "Обявлений не нашлось");
+            helpers.csvHelper.writeToFile(offerList);
+        }
+
     }
     //-------------------------------------------------METHODS----------------------------------------------------------
     private boolean isElementPresent(By by) {
