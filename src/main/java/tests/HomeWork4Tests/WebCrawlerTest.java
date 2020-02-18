@@ -3,10 +3,7 @@ package tests.HomeWork4Tests;
 import config.BaseWebDrivingTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -17,6 +14,8 @@ import tests.HomeWork4Tests.dto.Offer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WebCrawlerTest extends BaseWebDrivingTest {
     private Logger log = LogManager.getLogger(WebCrawlerTest.class);
@@ -24,9 +23,10 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     //=======================Тестовые данные=================
     private static final String URL = "https://www.drive2.ru/cars/?sort=selling";
     private String currentUrl;
+    private String carType;
+    private  static  final String regExDigital = "[0-9]*[.,]?[0-9]"; //регуляярное выражение только для дробных чисел.
     private List<String> carsList = new ArrayList<>();
     private List<Offer> offerList = new ArrayList<>();
-    //private List<WebElement> carsListElements = new ArrayList<>();
     /*
     * собрать все объявления о продаже в csv-файл (ссылка, год автомобиля, цена, марка, модель, объем двигателя)
     */
@@ -47,7 +47,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            Assert.assertNotNull(offerList, "Обявлений не нашлось");
+            Assert.assertNotNull(offerList, "Объявлений не нашлось");
             helpers.csvHelper.writeToFile(offerList);
         }
 
@@ -73,6 +73,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
 
     public List<Offer> getAllOffersListByCar(List<String> carsList){
         carsList.forEach(car ->{
+            carType = car;
             List<String> modelsList = new ArrayList<>();
             driver.findElement(By.xpath(".//a[contains(text(),'"+ car +"')]")).click();
             while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']"))) scrollBy(50000);
@@ -88,7 +89,19 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
                 driver.findElement(By.xpath(".//div[contains(@class, 'c-darkening-hover-container') and .//div/span[contains(text(),'"+ e +"')]]/a")).click();
                 WebElement price = (new WebDriverWait(driver,100))
                         .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
-                offerList.add(new Offer(Offer.anOffer().withModel(e).withPrice(price.getText()).build()));
+                WebElement volume = (new WebDriverWait(driver,100))
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
+                WebElement year = (new WebDriverWait(driver,100))
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
+                String deeplink = driver.getCurrentUrl();
+                offerList.add(new Offer(Offer.anOffer()
+                        .withCar(carType)
+                        .withModel(e)
+                        .withVolume(getVolumeFromString(volume.getText()))
+                        .withPrice(price.getText())
+                        .withYear(getYearOfCarFromString(year.getText()))
+                        .withDeepLink(deeplink)
+                        .build()));
                 log.info("Возвращаемся к списку моделей ...");
                 driver.get(currentUrl);
             });
@@ -110,6 +123,22 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
             modelsList.add(text);
             System.out.println(text);
         });
+    }
+
+    public String getVolumeFromString(String string){
+        Pattern pattern = Pattern.compile(regExDigital);
+        Matcher matcher = pattern.matcher(string);
+        if(matcher.find()) string = matcher.group();
+        return string;
+    }
+
+    public String getYearOfCarFromString(String string){
+        string = string.substring(0,string.indexOf(","));
+        System.out.println(string);
+        Pattern pattern = Pattern.compile(regExDigital);
+        Matcher matcher = pattern.matcher(string);
+        if(matcher.find()) string = matcher.group();
+        return string;
     }
 
     public void scrollBy(int y){ ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,"+ y +")"); }

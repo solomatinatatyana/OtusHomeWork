@@ -1,4 +1,4 @@
-package pages.otusBlocks.blocks;
+package pages.otusPages.blocks;
 
 import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.annotations.Block;

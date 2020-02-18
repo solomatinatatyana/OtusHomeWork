@@ -1,6 +1,5 @@
 package tests.HomeWork4Tests.utils;
 
-import Helpers.SimpleDateHelper;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -8,9 +7,6 @@ import tests.HomeWork4Tests.dto.Offer;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class CSVHelper implements ICSVHelper{

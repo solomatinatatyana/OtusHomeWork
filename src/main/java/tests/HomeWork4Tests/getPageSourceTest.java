@@ -16,7 +16,6 @@ public class getPageSourceTest extends BaseWebDrivingTest {
         String title = html.title();
         String h1 = html.body().getElementsByTag("a").text();
         Elements listNews = html.select(".c-makes__item.is-important");
-        listNews.get(0).text();
         listNews.forEach(element -> System.out.println(element.text()));
     }
 

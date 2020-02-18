@@ -56,7 +56,7 @@ public class HomeWork5Test extends BaseWebDrivingTest {
         dataPage.addContactButton.click();
         dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
         setInfo(dataPage.communicationTextInput0,contactText1);
-        dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
+        //dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
         //setInfo(dataPage.communicationTextInput1,"text2");
         saveInfo();
     }

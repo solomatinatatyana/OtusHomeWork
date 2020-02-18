@@ -7,8 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.AbstractPage;
-import pages.otusBlocks.blocks.ProfileNavBar;
-import pages.otusBlocks.blocks.ProfileSelect;
+import pages.otusPages.blocks.ProfileNavBar;
+import pages.otusPages.blocks.ProfileSelect;
 import ru.yandex.qatools.htmlelements.loader.HtmlElementLoader;
 
 public class ProfilePage extends AbstractPage {
