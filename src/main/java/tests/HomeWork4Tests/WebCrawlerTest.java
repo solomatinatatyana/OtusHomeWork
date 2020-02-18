@@ -3,7 +3,10 @@ package tests.HomeWork4Tests;
 import config.BaseWebDrivingTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -24,7 +27,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     private static final String URL = "https://www.drive2.ru/cars/?sort=selling";
     private String currentUrl;
     private String carType;
-    private  static  final String regExDigital = "[0-9]*[.,]?[0-9]"; //регуляярное выражение только для дробных чисел.
+    private  static  final String regExDigital = "[0-9]*[.,]?[0-9]";
     private List<String> carsList = new ArrayList<>();
     private List<Offer> offerList = new ArrayList<>();
     /*
@@ -47,7 +50,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            Assert.assertNotNull(offerList, "Объявлений не нашлось");
+            Assert.assertTrue( offerList.size() != 0, "Объявлений не нашлось");
             helpers.csvHelper.writeToFile(offerList);
         }
 
@@ -92,7 +95,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
                 WebElement volume = (new WebDriverWait(driver,100))
                         .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
                 WebElement year = (new WebDriverWait(driver,100))
-                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
+                        .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(5)")));
                 String deeplink = driver.getCurrentUrl();
                 offerList.add(new Offer(Offer.anOffer()
                         .withCar(carType)
@@ -120,6 +123,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
                 int indexOfSilva = text.indexOf("De'Silva");
                 text = text.substring(0, indexOfSilva);
             }
+            text = getFormattedString(text);
             modelsList.add(text);
             System.out.println(text);
         });
@@ -133,11 +137,19 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     }
 
     public String getYearOfCarFromString(String string){
+        //добавить проверку на то что если нету первой части то берем другой год
         string = string.substring(0,string.indexOf(","));
-        System.out.println(string);
         Pattern pattern = Pattern.compile(regExDigital);
         Matcher matcher = pattern.matcher(string);
         if(matcher.find()) string = matcher.group();
+        return string;
+    }
+
+    public String getFormattedString(String string){
+        Pattern pattern = Pattern.compile("\\s{2,}");
+        Matcher matcher = pattern.matcher(string);
+        if(matcher.find())
+            string = string.replaceAll("\\s{2,}"," ");
         return string;
     }
 

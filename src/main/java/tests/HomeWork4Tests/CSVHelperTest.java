@@ -1,9 +1,7 @@
 package tests.HomeWork4Tests;
 
-import Helpers.SimpleDateHelper;
 import config.BaseTest;
 import org.testng.annotations.Test;
-import sun.java2d.pipe.SpanShapeRenderer;
 import tests.HomeWork4Tests.dto.Offer;
 import tests.HomeWork4Tests.utils.CSVHelper;
 import tests.HomeWork4Tests.utils.ICSVHelper;
@@ -54,5 +52,17 @@ public class CSVHelperTest extends BaseTest {
         Matcher matcher = pattern.matcher(ab);
         if(matcher.find())
             System.out.println("year: " +matcher.group());
+    }
+
+    @Test()
+    public void test3(){
+        String ab = "String   12212   skhsk'hks";
+        ab = ab.replaceAll("\\s{2,}"," ");
+        System.out.println(ab);
+       /* String text =  e.getText();
+        if (text.contains("\'")) {
+            int indexOfSilva = text.indexOf("De'Silva");
+            text = text.substring(0, indexOfSilva);
+        }*/
     }
 }

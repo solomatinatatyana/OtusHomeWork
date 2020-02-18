@@ -2,6 +2,10 @@ package tests.HomeWork5Tests;
 
 import config.BaseWebDrivingTest;
 import config.LoginConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -12,6 +16,7 @@ import pages.otusPages.ProfilePages.PersonalDataPage;
 import ru.yandex.qatools.htmlelements.element.TextInput;
 
 public class HomeWork5Test extends BaseWebDrivingTest {
+    private Logger log = LogManager.getLogger(HomeWork5Test.class);
     private SoftAssert softAssert = new SoftAssert();
 
     private ILoginPage loginPage;
@@ -53,6 +58,8 @@ public class HomeWork5Test extends BaseWebDrivingTest {
 //-------------------------------------------------METHODS--------------------------------------------------------------
 
     private void setContactInfo(){
+        WebDriverWait wait = new WebDriverWait(driver, 50L);
+        wait.until(ExpectedConditions.presenceOfElementLocated(dataPage.addContactButtonLocator));
         dataPage.addContactButton.click();
         dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
         setInfo(dataPage.communicationTextInput0,contactText1);

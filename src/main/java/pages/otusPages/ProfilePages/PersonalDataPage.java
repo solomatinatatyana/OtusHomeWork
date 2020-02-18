@@ -3,6 +3,7 @@ package pages.otusPages.ProfilePages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,6 +23,7 @@ public class PersonalDataPage extends AbstractPage {
     }
 
     public By removeContactButton = By.xpath("./div[3]/div[2]/button[text() = 'Удалить']");
+    public By addContactButtonLocator = By.xpath(".//button[contains(text(), 'Добавить')]");
     public By selectOptions = By.cssSelector(".lk-cv-block__select-scroll.lk-cv-block__select-scroll_service.js-custom-select-options");
     public By contBlock1 = By.xpath(".//div[@data-num = 1]");
 
@@ -32,7 +34,7 @@ public class PersonalDataPage extends AbstractPage {
     public HtmlElement contactBlock1;
 
     @FindBy(xpath = ".//button[contains(text(), 'Добавить')]")
-    public Button addContactButton;
+    public WebElement addContactButton;
 
     @FindBy(xpath = "//div[span[contains(text(),'Способ связи')]]")
     public HtmlElement communicationMethod;
