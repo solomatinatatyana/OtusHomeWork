@@ -11,11 +11,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
-public class CSVHelper implements ICSVHelper{
-    private Logger log = LogManager.getLogger(CSVHelper.class);
-    private final String CSV_LOCATION = "src/main/resources/Offers.csv";
+public class CSVHelperImpl implements ICSVHelper{
+    private Logger log = LogManager.getLogger(CSVHelperImpl.class);
+    private String CSV_NAME_FILE = "offers_"+SimpleDateHelper.getCurrentDateTime("yyyy-MM-dd_hh-mm-ss");
+    private String CSV_PATH = "src/main/resources/offers/";
+    private String CSV_LOCATION = CSV_PATH + CSV_NAME_FILE + ".csv";
 
-    public CSVHelper() { }
+
+    public CSVHelperImpl() { }
 
     @Override
     public List<String> readFromFile() {
@@ -38,7 +41,7 @@ public class CSVHelper implements ICSVHelper{
 
             log.info("Записываем список собранных объявлений в файл [{}]", CSV_LOCATION);
             beanWriter.write(offerList);
-            log.info("Запись в файл окончена");
+            log.info("Запись в файл окончена. Выгружено [{}] записей.", offerList.size());
             writer.close();
         }catch (Exception e){
             e.printStackTrace();

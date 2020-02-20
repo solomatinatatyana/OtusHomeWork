@@ -13,6 +13,8 @@ public class WebApplicationManager {
         return this.driver;
     }
 
+    public WebApplicationManager() { }
+
     public WebApplicationManager(BrowserType browserType, MutableCapabilities options) {
         this.options = options;
         this.driver = WebDriverFactory.createNewDriver(browserType, options);
