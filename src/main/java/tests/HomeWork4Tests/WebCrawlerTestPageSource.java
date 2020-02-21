@@ -3,6 +3,10 @@ package tests.HomeWork4Tests;
 import config.BaseWebDrivingTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -17,9 +21,11 @@ import tests.HomeWork4Tests.dto.Offer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class WebCrawlerTest extends BaseWebDrivingTest {
-    private Logger log = LogManager.getLogger(WebCrawlerTest.class);
+public class WebCrawlerTestPageSource extends BaseWebDrivingTest {
+    private Logger log = LogManager.getLogger(WebCrawlerTestPageSource.class);
     private SoftAssert softAssert = new SoftAssert();
     private WebCrawlerHelper webCrawlerHelper;
     //=======================Тестовые данные=================
@@ -66,10 +72,12 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
     }
 
     public List<String> getCarsList(){
-        List<WebElement> carsListElements  = driver.findElements(By.cssSelector(".c-makes__item.is-important"));
-        carsListElements.forEach(element->{
-            carsList.add(element.getText());
-            System.out.println(element.getText());
+        String carPage = driver.getPageSource();
+        Document html = Jsoup.parse(carPage);
+        Elements listNews = html.select(".c-makes__item.is-important");
+        listNews.forEach(element -> {
+            carsList.add(element.text());
+            System.out.println(element.text());
         });
         return carsList;
     }
@@ -87,6 +95,7 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
                 currentUrl = driver.getCurrentUrl();
                 log.info(e);
                 //переходим на объявление
+                while(isElementPresent(By.xpath(".//button[@data-action='catalog.morecars']"))) scrollBy(50000);
                 driver.findElement(By.xpath(".//div[contains(@class, 'c-darkening-hover-container') and .//div/span[contains(text(),'"+ e +"')]]/a")).click();
                 //собираем объявление и добавляем в список
                 setOfferList(carType,e,offerList);
@@ -108,25 +117,28 @@ public class WebCrawlerTest extends BaseWebDrivingTest {
                 int indexOfSilva = text.indexOf("De'Silva");
                 text = text.substring(0, indexOfSilva);
             }
+            if(text.contains("Beauty in Black")){
+                int indexOfBeauty = text.indexOf("Beauty in Black");
+                text = text.substring(0, indexOfBeauty);
+            }
             modelsList.add(text);
             System.out.println(text);
         });
     }
 
     public void setOfferList(String carType, String model, List<Offer> offerList){
-        WebElement price = (new WebDriverWait(driver,100))
-                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
-        WebElement volume = (new WebDriverWait(driver,100))
-                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
-        WebElement year = (new WebDriverWait(driver,100))
-                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(5)")));
+        String carPage = driver.getPageSource();
+        Document html = Jsoup.parse(carPage);
+        Element price = html.select(".c-car-forsale__price>strong").first();
+        Element volume = html.select("ul[class=c-car-forsale__info]>li:nth-child(2)").first();
+        Element year = html.select("ul[class=c-car-forsale__info]>li:nth-child(5)").first();
         String deeplink = driver.getCurrentUrl();
         offerList.add(new Offer(Offer.anOffer()
                 .withCar(carType)
                 .withModel(model)
-                .withVolume(WebCrawlerHelper.getVolumeFromString(volume.getText()))
-                .withPrice(price.getText())
-                .withYear(WebCrawlerHelper.getYearOfCarFromString(year.getText()))
+                .withVolume(WebCrawlerHelper.getVolumeFromString(volume.text()))
+                .withPrice(price.text())
+                .withYear(WebCrawlerHelper.getYearOfCarFromString(year.text()))
                 .withDeepLink(deeplink)
                 .build()));
     }
