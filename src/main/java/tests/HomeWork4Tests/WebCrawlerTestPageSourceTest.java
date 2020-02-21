@@ -10,23 +10,16 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 import tests.HomeWork4Tests.dto.Offer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class WebCrawlerTestPageSource extends BaseWebDrivingTest {
-    private Logger log = LogManager.getLogger(WebCrawlerTestPageSource.class);
-    private SoftAssert softAssert = new SoftAssert();
+public class WebCrawlerTestPageSourceTest extends BaseWebDrivingTest {
+    private Logger log = LogManager.getLogger(WebCrawlerTestPageSourceTest.class);
     private WebCrawlerHelper webCrawlerHelper;
     //=======================Тестовые данные=================
     private static final String URL = "https://www.drive2.ru/cars/?sort=selling";
@@ -56,7 +49,7 @@ public class WebCrawlerTestPageSource extends BaseWebDrivingTest {
             log.error("Ой, что-то пошло не так");
             e.printStackTrace();
         }finally {
-            Assert.assertTrue( offerList.size() != 0, "Объявлений не нашлось");
+                Assert.assertTrue( offerList.size() != 0, "Объявлений не нашлось");
             helpers.csvHelper.writeToFile(offerList);
         }
 
@@ -74,8 +67,8 @@ public class WebCrawlerTestPageSource extends BaseWebDrivingTest {
     public List<String> getCarsList(){
         String carPage = driver.getPageSource();
         Document html = Jsoup.parse(carPage);
-        Elements listNews = html.select(".c-makes__item.is-important");
-        listNews.forEach(element -> {
+        Elements cars = html.select(".c-makes__item.is-important");
+        cars.forEach(element -> {
             carsList.add(element.text());
             System.out.println(element.text());
         });
@@ -110,10 +103,12 @@ public class WebCrawlerTestPageSource extends BaseWebDrivingTest {
     }
 
     public void setModelList(List<String> modelsList){
-        List<WebElement> modelListElements = driver.findElements(By.xpath(".//div[@class = 'c-car-card-sa__caption']/span"));
-        modelListElements.forEach(e->{
-            String text =  e.getText();
-            if (text.contains("\'")) {
+        String modelPage = driver.getPageSource();
+        Document html = Jsoup.parse(modelPage);
+        Elements models = html.select(".c-car-card-sa__caption>span");
+        models.forEach(element -> {
+            String text =  element.text();
+            if (text.contains("'")) {
                 int indexOfSilva = text.indexOf("De'Silva");
                 text = text.substring(0, indexOfSilva);
             }
