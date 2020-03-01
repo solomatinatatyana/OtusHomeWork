@@ -10,6 +10,9 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -121,7 +124,7 @@ public class WebCrawlerTestPageSourceTest extends BaseWebDrivingTest {
         });
     }
 
-    public void setOfferList(String carType, String model, List<Offer> offerList){
+    /*public void setOfferList(String carType, String model, List<Offer> offerList){
         String carPage = driver.getPageSource();
         Document html = Jsoup.parse(carPage);
         Element price = html.select(".c-car-forsale__price>strong").first();
@@ -134,6 +137,24 @@ public class WebCrawlerTestPageSourceTest extends BaseWebDrivingTest {
                 .withVolume(WebCrawlerHelper.getVolumeFromString(volume.text()))
                 .withPrice(price.text())
                 .withYear(WebCrawlerHelper.getYearOfCarFromString(year.text()))
+                .withDeepLink(deeplink)
+                .build()));
+    }*/
+
+    public void setOfferList(String carType, String model, List<Offer> offerList){
+        WebElement price = (new WebDriverWait(driver,100))
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
+        WebElement volume = (new WebDriverWait(driver,100))
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
+        WebElement year = (new WebDriverWait(driver,100))
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(5)")));
+        String deeplink = driver.getCurrentUrl();
+        offerList.add(new Offer(Offer.anOffer()
+                .withCar(carType)
+                .withModel(model)
+                .withVolume(WebCrawlerHelper.getVolumeFromString(volume.getText()))
+                .withPrice(price.getText())
+                .withYear(WebCrawlerHelper.getYearOfCarFromString(year.getText()))
                 .withDeepLink(deeplink)
                 .build()));
     }
