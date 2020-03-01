@@ -142,11 +142,11 @@ public class WebCrawlerTestPageSourceTest extends BaseWebDrivingTest {
     }*/
 
     public void setOfferList(String carType, String model, List<Offer> offerList){
-        WebElement price = (new WebDriverWait(driver,100))
+        WebElement price = (new WebDriverWait(driver,200))
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".c-car-forsale__price>strong")));
-        WebElement volume = (new WebDriverWait(driver,100))
+        WebElement volume = (new WebDriverWait(driver,200))
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(2)")));
-        WebElement year = (new WebDriverWait(driver,100))
+        WebElement year = (new WebDriverWait(driver,200))
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("ul[class=c-car-forsale__info]>li:nth-child(5)")));
         String deeplink = driver.getCurrentUrl();
         offerList.add(new Offer(Offer.anOffer()
