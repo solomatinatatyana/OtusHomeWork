@@ -1,11 +1,8 @@
 package tests.HomeWork5Tests;
 
 import config.BaseWebDrivingTest;
-import config.LoginConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -37,16 +34,17 @@ public class HomeWork5Test extends BaseWebDrivingTest {
     @Test()
     public void checkProfile(){
         this.init();
-        loginPage.doLogin(testData.getURL(), LoginConstants.AUTH_OTUS.getLogin(), LoginConstants.AUTH_OTUS.getPassword());
+        loginPage.doLogin(testData.getURL(), auth.getLogin(), auth.getPassword());
         goToProfile();
         setContactInfo();
         openNewBrowser();
-        loginPage.doLogin(testData.getURL(), LoginConstants.AUTH_OTUS.getLogin(), LoginConstants.AUTH_OTUS.getPassword());
+        loginPage.doLogin(testData.getURL(), auth.getLogin(), auth.getPassword());
         goToProfile();
-        String currentContactText1 = dataPage.communicationTextInput0.getEnteredText();
-        //String currentContactText2 = dataPage.communicationTextInput1.getEnteredText();
+        log.info("Проверяем добавленные данные");
+        String currentContactText1 = dataPage.communicationTextInputFirst.getEnteredText();
+        String currentContactText2 = dataPage.communicationTextInputSecond.getEnteredText();
         softAssert.assertEquals(currentContactText1, contactText1, "Неверный текст у контакта 1");
-        //softAssert.assertEquals(currentContactText2, contactText2, "Неверный текст у контакта 2");
+        softAssert.assertEquals(currentContactText2, contactText2, "Неверный текст у контакта 2");
         softAssert.assertAll();
     }
 
@@ -58,17 +56,19 @@ public class HomeWork5Test extends BaseWebDrivingTest {
 //-------------------------------------------------METHODS--------------------------------------------------------------
 
     private void setContactInfo(){
-        WebDriverWait wait = new WebDriverWait(driver, 50L);
-        wait.until(ExpectedConditions.presenceOfElementLocated(dataPage.addContactButtonLocator));
-        dataPage.addContactButton.click();
-        dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
-        setInfo(dataPage.communicationTextInput0,contactText1);
-        //dataPage.selectCommunicationMethod(dataPage.whatsAppButton);
-        //setInfo(dataPage.communicationTextInput1,"text2");
+        dataPage.addContact();
+        log.info("Добавляем первый контакт");
+        dataPage.selectCommunicationMethod(dataPage.whatsAppButtonFirst);
+        setInfo(dataPage.communicationTextInputFirst,contactText1);
+        log.info("Добавляем второй контакт");
+        dataPage.selectCommunicationMethod(dataPage.whatsAppButtonSecond);
+        log.info("Контакты добавлены");
+        setInfo(dataPage.communicationTextInputSecond,contactText2);
         saveInfo();
     }
 
     private void goToProfile(){
+        log.info("Переходим на страничку [О себе]");
         profilePage.goToMyProfile();
         profilePage.goToBiography();
     }
@@ -85,15 +85,14 @@ public class HomeWork5Test extends BaseWebDrivingTest {
 
     private void openNewBrowser(){
         tearDown();
+        log.info("Открываем браузер заново");
         setUp();
         this.init();
     }
 
     private void clearContactsOnProfile(){
-        dataPage.contactBlock0.findElement(dataPage.removeContactButton).click();
-        /*WebDriverWait wait = new WebDriverWait(driver, 50L);
-        wait.until(ExpectedConditions.presenceOfElementLocated(dataPage.contBlock1));
-        dataPage.contactBlock1.findElement(dataPage.removeContactButton).click();*/
+        dataPage.deleteContact(dataPage.contactBlockFirst);
+        dataPage.deleteContact(dataPage.contactBlockSecond);
         saveInfo();
     }
 

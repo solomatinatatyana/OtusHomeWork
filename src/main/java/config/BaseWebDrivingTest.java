@@ -1,6 +1,7 @@
 package config;
 
 import Helpers.Helpers;
+import config.injection.interfaces.AuthorizationConfig;
 import config.injection.interfaces.TestDataConfig;
 import config.ui.BrowserType;
 import config.ui.WebApplicationManager;
@@ -9,8 +10,6 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import pages.login.ILoginPage;
-import pages.login.LoginPageOtus;
 
 /**
  * Класс для запуска тестов с использованием браузера
@@ -19,6 +18,7 @@ public class BaseWebDrivingTest extends BaseTest {
     protected WebApplicationManager webApp;
     protected WebDriver driver;
     protected TestDataConfig testData;
+    protected AuthorizationConfig auth;
     protected MutableCapabilities options;
     public Helpers helpers;
 
@@ -34,6 +34,7 @@ public class BaseWebDrivingTest extends BaseTest {
         log.info("Test: [{}]",this.getClass().asSubclass(this.getClass()).getSimpleName());
         log.info("Browser: [{}]",BrowserType.valueOf(browser));
         testData = ConfigFactory.create(TestDataConfig.class);
+        auth = ConfigFactory.create(AuthorizationConfig.class);
         this.options = new MutableCapabilities();
         this.webApp = new WebApplicationManager(BrowserType.valueOf(browser), options);
         this.setDriver(webApp.getDriver());

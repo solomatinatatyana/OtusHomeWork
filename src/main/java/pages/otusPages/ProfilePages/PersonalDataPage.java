@@ -21,45 +21,58 @@ public class PersonalDataPage extends AbstractPage {
         super(driver);
         PageFactory.initElements(new HtmlElementDecorator(driver), this);
     }
-
-    public By removeContactButton = By.xpath("./div[3]/div[2]/button[text() = 'Удалить']");
-    public By addContactButtonLocator = By.xpath(".//button[contains(text(), 'Добавить')]");
     public By selectOptions = By.cssSelector(".lk-cv-block__select-scroll.lk-cv-block__select-scroll_service.js-custom-select-options");
-    public By contBlock1 = By.xpath(".//div[@data-num = 1]");
-
-    @FindBy(xpath = ".//div[@data-num = 0]")
-    public HtmlElement contactBlock0;
-
-    @FindBy(xpath = ".//div[@data-num = 1]")
-    public HtmlElement contactBlock1;
-
-    @FindBy(xpath = ".//button[contains(text(), 'Добавить')]")
-    public WebElement addContactButton;
+    public By removeContactButton = By.xpath("./div[3]/div[2]/button[text() = 'Удалить']");
 
     @FindBy(xpath = "//div[span[contains(text(),'Способ связи')]]")
     public HtmlElement communicationMethod;
 
     @FindBy(xpath = ".//input[@name= 'contact-0-value']")
-    public TextInput communicationTextInput0;
+    public TextInput communicationTextInputFirst;
 
     @FindBy(xpath = ".//input[@name= 'contact-1-value']")
-    public TextInput communicationTextInput1;
+    public TextInput communicationTextInputSecond;
 
-    @FindBy(xpath = ".//button[@title= 'WhatsApp']")
-    public Button whatsAppButton;
+    @FindBy(xpath = ".//div[@data-num='0']/div/div/div/div/div/div/button[@data-value='whatsapp']")
+    public Button whatsAppButtonFirst;
 
-    @FindBy(xpath = ".//button[@title= 'VK']")
-    public Button VKButton;
+    @FindBy(xpath = ".//div[@data-num='1']/div/div/div/div/div/div/button[@data-value='whatsapp']")
+    public Button whatsAppButtonSecond;
 
     @FindBy(xpath = ".//button[@title= 'Сохранить и продолжить']")
     public Button saveButton;
 
+    @FindBy(xpath = ".//div[@data-num = 0]")
+    public WebElement contactBlockFirst;
+
+    @FindBy(xpath = ".//div[@data-num = 1]")
+    public WebElement contactBlockSecond;
+
+    @FindBy(xpath = ".//button[contains(text(), 'Добавить')]")
+    public WebElement addContactButton;
+
+    /*@FindBy(xpath = "./div[3]/div[2]/button[text() = 'Удалить']")
+    public WebElement removeContactButton;*/
+
+
     public void selectCommunicationMethod(Button button){
-        communicationMethod.click();
         WebDriverWait wait = new WebDriverWait(driver,50L);
-        wait.until(ExpectedConditions.presenceOfElementLocated(selectOptions));
-        scrollBy(50);
+        wait.until(ExpectedConditions.visibilityOfAllElements(this.communicationMethod));
+        this.communicationMethod.click();
+        WebDriverWait wait2 = new WebDriverWait(driver,50L);
+        wait2.until(ExpectedConditions.presenceOfElementLocated(selectOptions));
         button.click();
     }
-    public void scrollBy(int y){ ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,"+ y +")"); }
+
+    public void addContact(){
+        WebDriverWait wait = new WebDriverWait(driver, 50L);
+        wait.until(ExpectedConditions.visibilityOfAllElements(this.addContactButton));
+        this.addContactButton.click();
+    }
+
+    public void deleteContact(WebElement element){
+        WebDriverWait wait = new WebDriverWait(driver, 50L);
+        wait.until(ExpectedConditions.visibilityOfAllElements(element));
+        element.findElement(this.removeContactButton).click();
+    }
 }
