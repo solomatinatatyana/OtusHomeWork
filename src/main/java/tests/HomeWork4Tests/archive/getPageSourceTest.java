@@ -1,4 +1,4 @@
-package tests.HomeWork4Tests;
+package tests.HomeWork4Tests.archive;
 
 import config.BaseWebDrivingTest;
 import org.jsoup.Jsoup;

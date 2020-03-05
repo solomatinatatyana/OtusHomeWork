@@ -1,6 +1,6 @@
 package config;
 
-import Helpers.Helpers;
+import Helpers.*;
 import config.injection.interfaces.AuthorizationConfig;
 import config.injection.interfaces.TestDataConfig;
 import config.ui.BrowserType;
@@ -21,6 +21,7 @@ public class BaseWebDrivingTest extends BaseTest {
     protected AuthorizationConfig auth;
     protected MutableCapabilities options;
     public Helpers helpers;
+    public Pages pages;
 
     public void setDriver(WebDriver driver){
         this.driver = driver;
@@ -39,6 +40,7 @@ public class BaseWebDrivingTest extends BaseTest {
         this.webApp = new WebApplicationManager(BrowserType.valueOf(browser), options);
         this.setDriver(webApp.getDriver());
         helpers = new Helpers(webApp, log);
+        pages = new Pages(webApp);
     }
 
     @AfterClass(alwaysRun = true)

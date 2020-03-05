@@ -1,4 +1,4 @@
-package tests.HomeWork4Tests;
+package tests.HomeWork4Tests.archive;
 
 import config.BaseTest;
 import org.testng.annotations.Test;

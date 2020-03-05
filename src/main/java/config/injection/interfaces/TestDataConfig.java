@@ -8,4 +8,8 @@ public interface TestDataConfig extends Config {
     @DefaultValue("https://google.com/")
     @Key("URL")
     String getURL();
+
+    @DefaultValue("https://google.com/")
+    @Key("webCrawlerUrl")
+    String getWebCrawlerIrl();
 }
